@@ -2,9 +2,10 @@
 import HelloWorldButton from './components/hello-world-button/hello-world-button.js'
 // import addImage from './add-image'
 import Heading from './components/heading/heading.js'
+import React from 'react'
 
 const heading = new Heading()
-heading.render()
+heading.render('hello-world')
 // helloWorld()
 // addImage()
 const helloWorldButton = new HelloWorldButton()

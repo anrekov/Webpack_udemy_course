@@ -1,28 +1,28 @@
 const path = require('path')
-const TerserPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    'hello-world': './src/hello-world.js',
+    kiwi: './src/kiwi.js',
+  },
   output: {
-    // filename: 'bundle.js',
-    // add caching for pages that haven't changed
-    filename: 'bundle.[contenthash].js',
-    // create an absolute path depends on current dirname and relative path
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, './dist'),
-    // path for static files (for example, images)
-    // publicPath: 'dist/',
     publicPath: '',
   },
-  // mode: 'none',
-  // mode: 'development',
   mode: 'production',
-
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      // in bits Byte/8
+      minSize: 3072,
+    },
+  },
   module: {
     rules: [
-      // convert svg to base64 (file size will be too big if we will use it for jpg or png)
       {
         test: /\.(svg)$/,
         type: 'asset/inline',
@@ -30,13 +30,6 @@ module.exports = {
       {
         test: /\.(png|jpg)$/,
         type: 'asset/resource',
-        // auto choose (if size < 8 kB - inline else resource)
-        // type: 'asset',
-        // parser: {
-        //   dataUrlCondition: {
-        //     maxSize: 3 * 1024  // change 8kB to 3kB
-        //   }
-        // }
       },
       {
         test: /\.txt/,
@@ -44,13 +37,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        // use: ['style-loader', 'css-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.scss$/,
-        // loaders are read from right to left
-        // use: ['style-loader', 'css-loader', 'sass-loader'],
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
@@ -72,24 +62,28 @@ module.exports = {
   },
 
   plugins: [
-    // new TerserPlugin(), // in production it sets by default
-    new MiniCssExtractPlugin({ filename: 'styles.[contenthash].css' }),
+    new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
-        // default - remove all subfolders and files inside dist
         '**/*',
-        // custom - remove all subfolders and files inside build
         path.join(process.cwd(), 'build**/*'),
       ],
     }),
     new HtmlWebpackPlugin({
+      filename: 'hello-world.html',
+      chunks: ['hello-world'],
       title: 'Hello world!',
-      // filename: 'subfolder/custom_filename.html',
-      // meta: {
-      //   description: 'Some description'
-      // },
-      template: 'src/index.hbs',
+      template: 'src/page-template.hbs',
       description: 'Somebody once told me...',
+      // minify: false,
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'kiwi.html',
+      chunks: ['kiwi'],
+      title: 'Kiwi(>_<)',
+      template: 'src/page-template.hbs',
+      description: 'Such a lonely day...',
+      // minify: false,
     }),
   ],
 }
