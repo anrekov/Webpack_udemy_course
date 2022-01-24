@@ -4,11 +4,14 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    'hello-world': './src/hello-world.js',
+    kiwi: './src/kiwi.js',
+  },
   output: {
     // filename: 'bundle.js',
     // add caching for pages that haven't changed
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     // create an absolute path depends on current dirname and relative path
     path: path.resolve(__dirname, './dist'),
     // path for static files (for example, images)
@@ -90,14 +93,28 @@ module.exports = {
         path.join(process.cwd(), 'build**/*'),
       ],
     }),
+    // new HtmlWebpackPlugin({
+    //   title: 'Hello world!',
+    //   // filename: 'subfolder/custom_filename.html',
+    //   // meta: {
+    //   //   description: 'Some description'
+    //   // },
+    //   template: 'src/index.hbs',
+    //   description: 'Somebody once told me...',
+    // }),
     new HtmlWebpackPlugin({
+      filename: 'hello-world.html',
+      chunks: ['hello-world'],
       title: 'Hello world!',
-      // filename: 'subfolder/custom_filename.html',
-      // meta: {
-      //   description: 'Some description'
-      // },
-      template: 'src/index.hbs',
+      template: 'src/page-template.hbs',
       description: 'Somebody once told me...',
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'kiwi.html',
+      chunks: ['kiwi'],
+      title: 'Kiwi(>_<)',
+      template: 'src/page-template.hbs',
+      description: 'Such a lonely day...',
     }),
   ],
 }
