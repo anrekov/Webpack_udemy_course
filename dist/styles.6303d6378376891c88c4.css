@@ -1,0 +1,25 @@
+/*!****************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/hello-world-button/hello-world-button.scss ***!
+  \****************************************************************************************************************************************************/
+.hello-world-button {
+  font-size: 20px;
+  padding: 7px 15px;
+  background: green;
+  color: white;
+  outline: none;
+}
+
+.hello-world-button:hover {
+  cursor: pointer;
+}
+
+.hello-world-text {
+  color: #f7c0c0;
+  font-weight: bold;
+}
+/*!******************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/components/heading/heading.scss ***!
+  \******************************************************************************************************************************/
+h1 {
+  color: gray;
+}

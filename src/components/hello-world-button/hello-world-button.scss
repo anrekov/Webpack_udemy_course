@@ -1,0 +1,21 @@
+$font-size: 20px;
+$button-bg-color: green;
+$button-f-color: white;
+$text-f-color: rgb(247, 192, 192);
+
+.hello-world-button {
+  font-size: $font-size;
+  padding: 7px 15px;
+  background: $button-bg-color;
+  color: $button-f-color;
+  outline: none;
+}
+
+.hello-world-button:hover {
+  cursor: pointer;
+}
+
+.hello-world-text {
+  color: $text-f-color;
+  font-weight: bold;
+}
