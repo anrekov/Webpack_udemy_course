@@ -1,6 +1,5 @@
 const path = require('path')
-const TerserPlugin = require('terser-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const TerserPlugin = require('terser-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -9,7 +8,7 @@ module.exports = {
   output: {
     // filename: 'bundle.js',
     // add caching for pages that haven't changed
-    filename: 'bundle.[contenthash].js',
+    filename: 'bundle.js',
     // create an absolute path depends on current dirname and relative path
     path: path.resolve(__dirname, './dist'),
     // path for static files (for example, images)
@@ -19,6 +18,16 @@ module.exports = {
   // mode: 'none',
   mode: 'development',
   // mode: 'production',
+  devServer: {
+    port: 9000,
+    static: {
+      directory: path.resolve(__dirname, './dist'),
+    },
+    devMiddleware: {
+      index: 'index.html',
+      writeToDisk: true,
+    },
+  },
 
   module: {
     rules: [
@@ -45,13 +54,13 @@ module.exports = {
       {
         test: /\.css$/,
         // use: ['style-loader', 'css-loader'],
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
         // loaders are read from right to left
         // use: ['style-loader', 'css-loader', 'sass-loader'],
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.js$/,
@@ -66,16 +75,13 @@ module.exports = {
       },
       {
         test: /\.hbs$/,
-        use: [
-          'handlebars-loader'
-        ]
-      }
+        use: ['handlebars-loader'],
+      },
     ],
   },
 
   plugins: [
-    new TerserPlugin(),
-    new MiniCssExtractPlugin({ filename: 'styles.[contenthash].css' }),
+    // new TerserPlugin(),  // we don't need to minify code during development
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
         // default - remove all subfolders and files inside dist
